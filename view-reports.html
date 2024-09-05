@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest Disaster Reports</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="dark:bg-gray-900 dark:text-gray-100 p-6">
+    
+    <!-- Heading Section -->
+    <div class="max-w-7xl mx-auto text-center mb-6">
+        <h1 class="text-4xl font-bold mb-4">Latest Disaster Reports</h1>
+        <p class="text-gray-400 mb-4">Here you can find the most recent disaster reports submitted by users.</p>
+        <!-- Clear Reports Button (Admin Only) -->
+        <button id="clear-reports" class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+            Clear Reports (Admin Only)
+        </button>
+    </div>
+
+    <!-- Disaster Reports Section -->
+    <div id="disaster-reports" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        <!-- Cards will be dynamically inserted here -->
+    </div>
+
+    <!-- Script to load and clear disaster reports -->
+    <script>
+        // Define the admin password (can be modified as needed)
+        const adminPassword = "admin123"; // Replace with your desired password
+
+        // Function to load and display disaster reports from localStorage
+        function loadDisasterReports() {
+            const disasterReports = JSON.parse(localStorage.getItem('disasterReports')) || [];
+            const reportContainer = document.getElementById('disaster-reports');
+            reportContainer.innerHTML = ''; // Clear previous reports
+            
+            // If there are no reports, display a message
+            if (disasterReports.length === 0) {
+                reportContainer.innerHTML = '<p class="text-gray-500 text-center">No disaster reports available.</p>';
+                return;
+            }
+
+            // Loop through the disaster reports to display them
+            disasterReports.reverse().forEach((report, index) => {
+                const reportCard = document.createElement('div');
+                reportCard.className = 'bg-gray-800 p-6 rounded-lg shadow-lg transform transition duration-500 hover:scale-105';
+
+                reportCard.innerHTML = `
+                    <h2 class="text-xl font-bold text-white mb-2">${index + 1}. ${report.type}</h2>
+                    <p class="text-gray-300 mb-1"><strong>Location:</strong> ${report.location}</p>
+                    <p class="text-gray-300 mb-1"><strong>Date:</strong> ${report.date}</p>
+                    <p class="text-gray-300 mb-3"><strong>Description:</strong> ${report.description}</p>
+                    <div class="border-t border-gray-600 mt-3 pt-3">
+                        <p class="text-gray-400"><strong>Contact Name:</strong> ${report.contactName}</p>
+                        <p class="text-gray-400"><strong>Email:</strong> ${report.contactEmail}</p>
+                    </div>
+                `;
+
+                // Append the card to the container
+                reportContainer.appendChild(reportCard);
+            });
+        }
+
+        // Function to clear all disaster reports with password verification
+        function clearDisasterReports() {
+            // Prompt the user to enter the admin password
+            const passwordInput = prompt("Please enter the admin password to clear the reports:");
+            
+            // Check if the entered password matches the admin password
+            if (passwordInput === adminPassword) {
+                localStorage.removeItem('disasterReports'); // Remove the item from localStorage
+                loadDisasterReports(); // Reload the reports (should show "No disaster reports available.")
+                alert('All disaster reports have been cleared.');
+            } else {
+                alert('Incorrect password. Reports were not cleared.');
+            }
+        }
+
+        // Event listener for the "Clear Reports" button
+        document.getElementById('clear-reports').addEventListener('click', clearDisasterReports);
+
+        // Load reports initially and set an interval to update the reports every 5 seconds
+        loadDisasterReports(); // Initial load
+        setInterval(loadDisasterReports, 5000); // Update every 5 seconds
+    </script>
+</body>
+</html>
