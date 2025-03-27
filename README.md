@@ -1,4 +1,4 @@
-# AlertX
+# Alert-X
 
 **AlertX** is a crowdsourcing disaster reporting tool designed to provide real-time disaster updates from the public for the public. The tool allows users to report disasters, view reports on a map, and access real-time statistics and safety precautions.
 
