@@ -10,7 +10,7 @@
 - **Real-Time Statistics**: Display live statistics related to disaster reports.
 - **Safety Precautions**: Access essential safety precautions for different types of disasters.
 
-## Technologies Used
+## Technologies Used:
 
 - **HTML**: Structure of the webpage.
 - **CSS**: Styling of the webpage (using Tailwind CSS and custom styles).
